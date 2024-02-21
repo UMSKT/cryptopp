@@ -99,6 +99,8 @@ TimerWord Timer::GetCurrentTimerValue()
 	timeval now;
 	gettimeofday(&now, NULLPTR);
 	return (TimerWord)now.tv_sec * 1000000 + now.tv_usec;
+#elif defined(CRYPTOPP_DJGPP_AVAILABLE)
+	return uclock();
 #else
 	// clock_t now;
 	return clock();
@@ -111,6 +113,8 @@ TimerWord Timer::TicksPerSecond()
 	return PerformanceCounterFrequency();
 #elif defined(CRYPTOPP_UNIX_AVAILABLE)
 	return 1000000;
+#elif defined(CRYPTOPP_DJGPP_AVAILABLE)
+	return UCLOCKS_PER_SEC;
 #else
 	return CLOCKS_PER_SEC;
 #endif
@@ -151,6 +155,8 @@ GetCurrentThreadNotImplemented:
 	tms now;
 	times(&now);
 	return now.tms_utime;
+#elif defined(CRYPTOPP_DJGPP_AVAILABLE)
+	return uclock();
 #else
 	return clock();
 #endif
@@ -166,6 +172,8 @@ TimerWord ThreadUserTimer::TicksPerSecond()
 #elif defined(CRYPTOPP_UNIX_AVAILABLE)
 	static const long ticksPerSecond = sysconf(_SC_CLK_TCK);
 	return ticksPerSecond;
+#elif defined(CRYPTOPP_DJGPP_AVAILABLE)
+	return UCLOCKS_PER_SEC;
 #else
 	return CLOCKS_PER_SEC;
 #endif
