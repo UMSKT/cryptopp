@@ -57,8 +57,10 @@
 // IBM XL C/C++ alignment modifier per Optimization Guide, pp. 19-20.
 // __IBM_ATTRIBUTES per XLC 12.1 AIX Compiler Manual, p. 473.
 // CRYPTOPP_ALIGN_DATA may not be reliable on AIX.
-#if defined(CRYPTOPP_CXX11_ALIGNAS)
+#if defined(CRYPTOPP_CXX11_ALIGNAS) && !defined(__DJGPP__)
 	#define CRYPTOPP_ALIGN_DATA(x) alignas(x)
+#elif defined(__DJGPP__)
+	#define CRYPTOPP_ALIGN_DATA(x)
 #elif defined(CRYPTOPP_MSC_VERSION)
 	#define CRYPTOPP_ALIGN_DATA(x) __declspec(align(x))
 #elif defined(__GNUC__) || defined(__clang__) || (__SUNPRO_CC >= 0x5100)

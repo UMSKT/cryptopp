@@ -48,6 +48,11 @@
 #define CRYPTOPP_BSD_AVAILABLE
 #endif
 
+// MSDOS via DJGPP
+#if defined(__DJGPP__)
+#define CRYPTOPP_DJGPP_AVAILABLE
+#endif
+
 // Microsoft compilers
 #if defined(CRYPTOPP_MSC_VERSION) || defined(__fastcall)
 	#define CRYPTOPP_FASTCALL __fastcall
@@ -121,7 +126,7 @@
 # endif
 #endif  // CRYPTOPP_INIT_PRIORITY, NO_OS_DEPENDENCE, Apple, Sun
 
-#if defined(CRYPTOPP_WIN32_AVAILABLE) || defined(CRYPTOPP_UNIX_AVAILABLE)
+#if defined(CRYPTOPP_WIN32_AVAILABLE) || defined(CRYPTOPP_UNIX_AVAILABLE) || defined(CRYPTOPP_DJGPP_AVAILABLE)
 #	define HIGHRES_TIMER_AVAILABLE
 #endif
 
@@ -135,7 +140,7 @@
 # endif
 #endif
 
-#if defined(CRYPTOPP_UNIX_AVAILABLE) || defined(CRYPTOPP_DOXYGEN_PROCESSING)
+#if defined(CRYPTOPP_UNIX_AVAILABLE) || defined(CRYPTOPP_DOXYGEN_PROCESSING) || defined(CRYPTOPP_DJGPP_AVAILABLE)
 #	define NONBLOCKING_RNG_AVAILABLE
 #	define BLOCKING_RNG_AVAILABLE
 #	define OS_RNG_AVAILABLE

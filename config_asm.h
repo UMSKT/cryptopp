@@ -69,6 +69,11 @@
 # define CRYPTOPP_DISABLE_ASM 1
 #endif
 
+// DJGPP is designed to support legacy intel processors, SSE2 is certainly not available
+#if defined(__DJGPP__)
+# define CRYPTOPP_DISABLE_ASM 1
+#endif
+
 // Sun Studio 12.1 provides GCC inline assembly
 // http://blogs.oracle.com/x86be/entry/gcc_style_asm_inlining_support
 #if defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x5100)

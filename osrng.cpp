@@ -163,9 +163,17 @@ NonblockingRng::NonblockingRng()
 	const int flags = O_RDONLY;
 # endif
 
-	m_fd = open("/dev/urandom", flags);
+# ifndef CRYPTOPP_NONBLOCKING_RNG_FILENAME
+#  if !defined(CRYPTOPP_DJGPP_AVAILABLE)
+#   define CRYPTOPP_NONBLOCKING_RNG_FILENAME "/dev/urandom"
+#  else
+#   define CRYPTOPP_NONBLOCKING_RNG_FILENAME "/dev/urandom\x24"
+#  endif
+# endif
+
+	m_fd = open(CRYPTOPP_NONBLOCKING_RNG_FILENAME, flags);
 	if (m_fd == -1)
-		throw OS_RNG_Err("open /dev/urandom");
+		throw OS_RNG_Err("open " CRYPTOPP_NONBLOCKING_RNG_FILENAME);
 
 #endif
 }
@@ -250,6 +258,8 @@ void NonblockingRng::GenerateBlock(byte *output, size_t size)
 #ifndef CRYPTOPP_BLOCKING_RNG_FILENAME
 # ifdef __OpenBSD__
 #  define CRYPTOPP_BLOCKING_RNG_FILENAME "/dev/srandom"
+# elif defined(CRYPTOPP_DJGPP_AVAILABLE)
+#  define CRYPTOPP_BLOCKING_RNG_FILENAME "/dev/random\x24"
 # else
 #  define CRYPTOPP_BLOCKING_RNG_FILENAME "/dev/random"
 # endif
